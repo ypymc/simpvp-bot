@@ -5,6 +5,9 @@ const GameClient = require('./game-client');
 
 const { logInfo } = require('./util/logger');
 
+const RESPOND_ODDS = 30; // i.e. "one in X"
+const GREET_ODDS = 3;
+
 const responder = new Responder();
 responder.on('ready', onResponderReady);
 
@@ -28,7 +31,7 @@ function onResponderReady() {
 function shouldRespond(message) {
   return (
     gameClient.mentionsPlayer(message) ||
-    random(10) === 1
+    random(RESPOND_ODDS) === 1
   );
 }
 
@@ -65,7 +68,7 @@ function onChat({ message }) {
 function onPlayerJoin({ username }) {
   if (!ready) return;
 
-  if (random(10) !== 1) return;
+  if (random(GREET_ODDS) !== 1) return;
 
   logInfo(`Decided to greet ${username}`);
   const response = responder.getResponse(username);
