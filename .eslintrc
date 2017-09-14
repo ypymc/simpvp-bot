@@ -1,0 +1,13 @@
+{
+  "extends": "airbnb-base",
+  "parserOptions": {
+    "sourceType": "script"
+  },
+  "rules": {
+    "class-methods-use-this": 0,
+    "no-underscore-dangle": 0,
+    "comma-dangle": [2, "never"],
+    "no-use-before-define": [2, { "functions": false }],
+    "function-paren-newline": [2, "multiline"]
+  }
+}

@@ -1,0 +1,40 @@
+#!/bin/bash
+
+set -euo pipefail
+
+# Log command outputs to stderr so that stdout can be piped to a log file
+log() {
+  echo "$@" 1>&2
+}
+
+main() {
+  if [[ "$(uname -s)" == "Darwin" ]]; then
+    log_dir=~/Library/Application\ Support/minecraft/logs
+  else
+    log_dir=~/.minecraft/logs
+  fi
+
+  if [ ! -d "$log_dir" ]; then
+    log "Unable to locate log directory (expected $log_dir). Exiting"
+    exit 1
+  else
+    log "Located Minecraft log directory ($log_dir)"
+  fi
+
+  log -n "Extracting log archives... "
+  gzip -dfk "$log_dir"/*.gz
+  log "Done"
+
+  public_chat="<[^-].+$"
+  join_event="[a-zA-Z0-9_]+ joined the game$"
+  leave_event="[a-zA-Z0-9_]+ left the game$"
+
+  # Read all logs...
+  cat "$log_dir"/*.log |
+    # ... then filter down to only valid public chat messages and join/leave events
+    grep -E "\[CHAT\] ($public_chat|$join_event|$leave_event)" |
+    # ... then strip out metadata
+    sed -E 's/.+\[CHAT\] //'
+}
+
+main "$@"
