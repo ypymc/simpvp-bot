@@ -65,10 +65,7 @@ function onChat({ message }) {
 function onPlayerJoin({ username }) {
   if (!ready) return;
 
-  // Greet people 1/3 of the time
-  const roll = random(3);
-  logInfo(`Rolled a ${roll}`);
-  if (roll !== 1) return;
+  if (random(10) !== 1) return;
 
   logInfo(`Decided to greet ${username}`);
   const response = responder.getResponse(username);
