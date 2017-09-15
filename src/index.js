@@ -1,8 +1,8 @@
 'use strict';
 
+const readline = require('readline');
 const Responder = require('./responder');
 const GameClient = require('./game-client');
-
 const { logInfo } = require('./util/logger');
 
 const RESPOND_ODDS = 30; // i.e. "one in X"
@@ -13,6 +13,13 @@ responder.on('ready', onResponderReady);
 
 let gameClient;
 let ready = false;
+
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+rl.on('line', onUserInput);
 
 function onSpawn() {
   ready = true;
@@ -75,4 +82,9 @@ function onPlayerJoin({ username }) {
 
   waitForTyping(response)
     .then(() => gameClient.chat(response));
+}
+
+function onUserInput(text) {
+  if (!ready) return;
+  gameClient.chat(text);
 }
