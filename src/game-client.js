@@ -46,7 +46,9 @@ class GameClient extends EventEmitter {
   }
 
   _waitThenReconnect() {
-    setTimeout(() => {
+    clearTimeout(this.waitingTimeout);
+
+    this.waitingTimeout = setTimeout(() => {
       logInfo('Attempting to reconnect');
       this._connect();
     }, 30000);
@@ -87,7 +89,6 @@ class GameClient extends EventEmitter {
 
   _onKicked(reason) {
     logInfo(`Kicked! ${reason}`);
-    this._waitThenReconnect();
   }
 
   _onEnd() {
