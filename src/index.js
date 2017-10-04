@@ -5,8 +5,8 @@ const Responder = require('./responder');
 const GameClient = require('./game-client');
 const { logInfo } = require('./util/logger');
 
-const RESPOND_ODDS = 30; // i.e. "one in X"
-const GREET_ODDS = 3;
+const RESPOND_ODDS = 100; // i.e. "one in X"
+const GREET_ODDS = 30;
 
 const responder = new Responder();
 responder.on('ready', onResponderReady);
